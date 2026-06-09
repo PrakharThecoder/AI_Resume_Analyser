@@ -1,0 +1,16 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+pydantic
+pydantic-settings
+python-multipart
+pyjwt
+passlib[bcrypt]
+ollama
+pymupdf
+python-dotenv
+httpx
+email-validator
+python-jose[cryptography]
+pdfplumber
+PyPDF2
