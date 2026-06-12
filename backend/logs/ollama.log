@@ -1,0 +1,178 @@
+2026-06-10 15:00:49,834 - llm_service - INFO - Performing startup Ollama connection check...
+2026-06-10 15:00:50,654 - llm_service - INFO - Ollama connection successful.
+2026-06-10 15:00:51,289 - llm_service - WARNING - Model issue: Model llama3.2:1b-instruct not found.
+2026-06-10 15:01:59,805 - llm_service - INFO - Request start: Generating response from LLM
+2026-06-10 15:02:00,791 - llm_service - ERROR - Model 'llama3.2:1b-instruct' not found on server.
+2026-06-10 15:02:05,416 - llm_service - INFO - Request start: Generating response from LLM
+2026-06-10 15:02:06,310 - llm_service - ERROR - Model 'llama3.2:1b-instruct' not found on server.
+2026-06-10 15:19:34,496 - llm_service - INFO - Performing startup Ollama connection check...
+2026-06-10 15:19:35,235 - llm_service - INFO - Ollama connection successful.
+2026-06-10 15:19:35,854 - llm_service - WARNING - Model issue: Model llama3.2:1b-instruct not found.
+2026-06-10 15:20:14,240 - llm_service - INFO - Request start: Generating response from LLM
+2026-06-10 15:20:15,031 - llm_service - ERROR - Model 'llama3.2:1b-instruct' not found on server.
+2026-06-10 15:20:48,799 - llm_service - INFO - Performing startup Ollama connection check...
+2026-06-10 15:20:49,476 - llm_service - INFO - Ollama connection successful.
+2026-06-10 15:20:50,115 - llm_service - WARNING - Model issue: Model llama3.2:1b-instruct not found.
+2026-06-10 15:20:52,165 - llm_service - INFO - Performing startup Ollama connection check...
+2026-06-10 15:20:52,878 - llm_service - INFO - Ollama connection successful.
+2026-06-10 15:20:53,503 - llm_service - WARNING - Model issue: Model llama3.2:1b-instruct not found.
+2026-06-10 15:22:32,210 - llm_service - INFO - Performing startup Ollama connection check...
+2026-06-10 15:22:32,849 - llm_service - INFO - Ollama connection successful.
+2026-06-10 15:22:33,460 - llm_service - WARNING - Model issue: Model llama3.2:1b-instruct not found.
+2026-06-10 15:22:35,578 - llm_service - INFO - Performing startup Ollama connection check...
+2026-06-10 15:22:36,230 - llm_service - INFO - Ollama connection successful.
+2026-06-10 15:22:36,853 - llm_service - WARNING - Model issue: Model llama3.2:1b-instruct not found.
+2026-06-10 15:23:00,553 - llm_service - INFO - Performing startup Ollama connection check...
+2026-06-10 15:23:01,194 - llm_service - INFO - Ollama connection successful.
+2026-06-10 15:23:01,814 - llm_service - WARNING - Model issue: Model llama3.2:1b-instruct not found.
+2026-06-11 10:29:07,064 - llm_service - INFO - Performing startup Ollama connection check...
+2026-06-11 10:29:07,699 - llm_service - INFO - Ollama connection successful.
+2026-06-11 10:29:08,242 - llm_service - WARNING - Model issue: Model llama3.2:1b-instruct not found.
+2026-06-11 10:39:26,071 - llm_service - INFO - Performing startup Ollama connection check...
+2026-06-11 10:39:26,675 - llm_service - INFO - Health check result: Ollama server is reachable and connected.
+2026-06-11 10:39:27,217 - llm_service - INFO - Configured model: llama3.2:1b
+2026-06-11 10:39:27,218 - llm_service - INFO - Available Ollama models: qwen2.5:1.5b, llama3.2:1b
+2026-06-11 10:39:27,218 - llm_service - INFO - Model validation successful: llama3.2:1b is available.
+2026-06-11 10:39:52,263 - llm_service - INFO - Health check result: Ollama server is reachable and connected.
+2026-06-11 10:39:52,922 - llm_service - INFO - Configured model: llama3.2:1b
+2026-06-11 10:39:52,923 - llm_service - INFO - Available Ollama models: qwen2.5:1.5b, llama3.2:1b
+2026-06-11 10:39:52,923 - llm_service - INFO - Model validation successful: llama3.2:1b is available.
+2026-06-11 10:40:41,878 - llm_service - INFO - Request start: Generating response from LLM
+2026-06-11 10:41:12,406 - llm_service - INFO - Request success: Response generated in 30.53s
+2026-06-11 10:41:13,896 - llm_service - INFO - Request start: Generating response from LLM
+2026-06-11 10:41:15,518 - llm_service - INFO - Request success: Response generated in 1.62s
+2026-06-11 10:51:14,971 - llm_service - INFO - Performing startup Ollama connection check...
+2026-06-11 10:51:15,593 - llm_service - INFO - Health check result: Ollama server is reachable and connected.
+2026-06-11 10:51:16,106 - llm_service - INFO - Configured model: llama3.2:1b
+2026-06-11 10:51:16,106 - llm_service - INFO - Available Ollama models: qwen2.5:1.5b, llama3.2:1b
+2026-06-11 10:51:16,106 - llm_service - INFO - Model validation successful: llama3.2:1b is available.
+2026-06-11 10:51:45,628 - llm_service - INFO - Health check result: Ollama server is reachable and connected.
+2026-06-11 10:52:07,594 - llm_service - INFO - Request start: Generating AI resume analysis from LLM
+2026-06-11 10:52:13,423 - llm_service - INFO - Request success: Response generated in 5.83s
+2026-06-11 10:56:51,830 - llm_service - INFO - Performing startup Ollama connection check...
+2026-06-11 10:56:52,416 - llm_service - INFO - Health check result: Ollama server is reachable and connected.
+2026-06-11 10:56:52,943 - llm_service - INFO - Configured model: llama3.2:1b
+2026-06-11 10:56:52,943 - llm_service - INFO - Available Ollama models: qwen2.5:1.5b, llama3.2:1b
+2026-06-11 10:56:52,943 - llm_service - INFO - Model validation successful: llama3.2:1b is available.
+2026-06-11 11:04:52,081 - llm_service - INFO - Performing startup Ollama connection check...
+2026-06-11 11:04:52,706 - llm_service - INFO - Health check result: Ollama server is reachable and connected.
+2026-06-11 11:04:53,230 - llm_service - INFO - Configured model: llama3.2:1b
+2026-06-11 11:04:53,231 - llm_service - INFO - Available Ollama models: qwen2.5:1.5b, llama3.2:1b
+2026-06-11 11:04:53,231 - llm_service - INFO - Model validation successful: llama3.2:1b is available.
+2026-06-11 11:04:54,943 - llm_service - INFO - Performing startup Ollama connection check...
+2026-06-11 11:04:55,497 - llm_service - INFO - Health check result: Ollama server is reachable and connected.
+2026-06-11 11:04:55,995 - llm_service - INFO - Configured model: llama3.2:1b
+2026-06-11 11:04:55,995 - llm_service - INFO - Available Ollama models: qwen2.5:1.5b, llama3.2:1b
+2026-06-11 11:04:55,996 - llm_service - INFO - Model validation successful: llama3.2:1b is available.
+2026-06-11 11:05:11,228 - llm_service - INFO - Performing startup Ollama connection check...
+2026-06-11 11:05:11,817 - llm_service - INFO - Health check result: Ollama server is reachable and connected.
+2026-06-11 11:05:12,342 - llm_service - INFO - Configured model: llama3.2:1b
+2026-06-11 11:05:12,342 - llm_service - INFO - Available Ollama models: qwen2.5:1.5b, llama3.2:1b
+2026-06-11 11:05:12,343 - llm_service - INFO - Model validation successful: llama3.2:1b is available.
+2026-06-11 11:05:14,045 - llm_service - INFO - Performing startup Ollama connection check...
+2026-06-11 11:05:14,607 - llm_service - INFO - Health check result: Ollama server is reachable and connected.
+2026-06-11 11:05:15,133 - llm_service - INFO - Configured model: llama3.2:1b
+2026-06-11 11:05:15,134 - llm_service - INFO - Available Ollama models: qwen2.5:1.5b, llama3.2:1b
+2026-06-11 11:05:15,134 - llm_service - INFO - Model validation successful: llama3.2:1b is available.
+2026-06-11 11:05:23,487 - llm_service - INFO - Performing startup Ollama connection check...
+2026-06-11 11:05:24,040 - llm_service - INFO - Health check result: Ollama server is reachable and connected.
+2026-06-11 11:05:24,549 - llm_service - INFO - Configured model: llama3.2:1b
+2026-06-11 11:05:24,550 - llm_service - INFO - Available Ollama models: qwen2.5:1.5b, llama3.2:1b
+2026-06-11 11:05:24,550 - llm_service - INFO - Model validation successful: llama3.2:1b is available.
+2026-06-11 11:05:26,283 - llm_service - INFO - Performing startup Ollama connection check...
+2026-06-11 11:05:26,855 - llm_service - INFO - Health check result: Ollama server is reachable and connected.
+2026-06-11 11:05:27,369 - llm_service - INFO - Configured model: llama3.2:1b
+2026-06-11 11:05:27,369 - llm_service - INFO - Available Ollama models: qwen2.5:1.5b, llama3.2:1b
+2026-06-11 11:05:27,369 - llm_service - INFO - Model validation successful: llama3.2:1b is available.
+2026-06-11 11:05:43,908 - llm_service - INFO - Performing startup Ollama connection check...
+2026-06-11 11:05:44,564 - llm_service - INFO - Health check result: Ollama server is reachable and connected.
+2026-06-11 11:05:45,096 - llm_service - INFO - Configured model: llama3.2:1b
+2026-06-11 11:05:45,096 - llm_service - INFO - Available Ollama models: qwen2.5:1.5b, llama3.2:1b
+2026-06-11 11:05:45,096 - llm_service - INFO - Model validation successful: llama3.2:1b is available.
+2026-06-11 11:05:46,934 - llm_service - INFO - Performing startup Ollama connection check...
+2026-06-11 11:05:47,530 - llm_service - INFO - Health check result: Ollama server is reachable and connected.
+2026-06-11 11:05:48,070 - llm_service - INFO - Configured model: llama3.2:1b
+2026-06-11 11:05:48,070 - llm_service - INFO - Available Ollama models: qwen2.5:1.5b, llama3.2:1b
+2026-06-11 11:05:48,070 - llm_service - INFO - Model validation successful: llama3.2:1b is available.
+2026-06-11 11:05:49,877 - llm_service - INFO - Performing startup Ollama connection check...
+2026-06-11 11:05:50,472 - llm_service - INFO - Health check result: Ollama server is reachable and connected.
+2026-06-11 11:05:51,001 - llm_service - INFO - Configured model: llama3.2:1b
+2026-06-11 11:05:51,001 - llm_service - INFO - Available Ollama models: qwen2.5:1.5b, llama3.2:1b
+2026-06-11 11:05:51,002 - llm_service - INFO - Model validation successful: llama3.2:1b is available.
+2026-06-11 11:05:52,634 - llm_service - INFO - Performing startup Ollama connection check...
+2026-06-11 11:05:53,207 - llm_service - INFO - Health check result: Ollama server is reachable and connected.
+2026-06-11 11:05:53,769 - llm_service - INFO - Configured model: llama3.2:1b
+2026-06-11 11:05:53,769 - llm_service - INFO - Available Ollama models: qwen2.5:1.5b, llama3.2:1b
+2026-06-11 11:05:53,769 - llm_service - INFO - Model validation successful: llama3.2:1b is available.
+2026-06-11 11:06:54,305 - llm_service - INFO - Request start: Generating response from LLM
+2026-06-11 11:06:55,016 - llm_service - ERROR - Model 'llama3.2:1b' not found on server.
+2026-06-11 11:09:19,316 - llm_service - INFO - Request start: Generating response from LLM
+2026-06-11 11:09:19,952 - llm_service - ERROR - Model 'llama3.2:1b' not found on server.
+2026-06-11 11:10:39,120 - llm_service - INFO - Health check result: Ollama server is reachable and connected.
+2026-06-11 11:10:39,727 - llm_service - INFO - Configured model: llama3.2:1b
+2026-06-11 11:10:39,727 - llm_service - INFO - Available Ollama models: qwen2.5:1.5b, llama3.2:1b
+2026-06-11 11:10:39,728 - llm_service - INFO - Model validation successful: llama3.2:1b is available.
+2026-06-11 11:17:43,709 - llm_service - INFO - Performing startup Ollama connection check...
+2026-06-11 11:17:44,270 - llm_service - INFO - Health check result: Ollama server is reachable and connected.
+2026-06-11 11:17:44,797 - llm_service - INFO - Configured model: llama3.2:1b
+2026-06-11 11:17:44,797 - llm_service - INFO - Available Ollama models: qwen2.5:1.5b, llama3.2:1b
+2026-06-11 11:17:44,798 - llm_service - INFO - Model validation successful: llama3.2:1b is available.
+2026-06-11 11:18:03,128 - llm_service - INFO - Model name used: llama3.2:1b
+2026-06-11 11:18:03,129 - llm_service - INFO - Prompt sent: Resume:
+Software Engineer with Python and FastAPI experience. Built REST APIs and machine learning projects.
+
+Job Description:
+Looking for a Backend Developer skilled in Python, FastAPI, Docker, Kubernetes, and AWS.
+2026-06-11 11:18:09,577 - llm_service - INFO - Request success: Response generated in 6.45s
+2026-06-11 11:18:30,040 - llm_service - INFO - Model name used: llama3.2:1b
+2026-06-11 11:18:30,041 - llm_service - INFO - Prompt sent: Hello
+2026-06-11 11:18:31,374 - llm_service - INFO - Request success: Response generated in 1.33s
+2026-06-11 11:21:36,195 - llm_service - INFO - Performing startup Ollama connection check...
+2026-06-11 11:21:36,770 - llm_service - INFO - Health check result: Ollama server is reachable and connected.
+2026-06-11 11:21:37,312 - llm_service - INFO - Configured model: llama3.2:1b
+2026-06-11 11:21:37,312 - llm_service - INFO - Available Ollama models: qwen2.5:1.5b, llama3.2:1b
+2026-06-11 11:21:37,313 - llm_service - INFO - Model validation successful: llama3.2:1b is available.
+2026-06-11 11:27:07,136 - llm_service - INFO - Performing startup Ollama connection check...
+2026-06-11 11:27:07,696 - llm_service - INFO - Health check result: Ollama server is reachable and connected.
+2026-06-11 11:27:08,222 - llm_service - INFO - Configured model: llama3.2:1b
+2026-06-11 11:27:08,223 - llm_service - INFO - Available Ollama models: qwen2.5:1.5b, llama3.2:1b
+2026-06-11 11:27:08,223 - llm_service - INFO - Model validation successful: llama3.2:1b is available.
+2026-06-11 11:27:39,247 - llm_service - INFO - Health check result: Ollama server is reachable and connected.
+2026-06-11 11:28:16,202 - llm_service - INFO - Request start: Generating interview questions from LLM
+2026-06-11 11:28:24,249 - llm_service - INFO - Request success: Questions generated in 8.05s
+2026-06-11 11:28:24,249 - llm_service - INFO - Question count generated: 27
+2026-06-11 11:45:40,629 - llm_service - INFO - Performing startup Ollama connection check...
+2026-06-11 11:45:41,223 - llm_service - INFO - Health check result: Ollama server is reachable and connected.
+2026-06-11 11:45:41,746 - llm_service - INFO - Configured model: llama3.2:1b
+2026-06-11 11:45:41,746 - llm_service - INFO - Available Ollama models: qwen2.5:1.5b, llama3.2:1b
+2026-06-11 11:45:41,747 - llm_service - INFO - Model validation successful: llama3.2:1b is available.
+2026-06-11 11:48:05,617 - llm_service - INFO - Performing startup Ollama connection check...
+2026-06-11 11:48:06,184 - llm_service - INFO - Health check result: Ollama server is reachable and connected.
+2026-06-11 11:48:06,702 - llm_service - INFO - Configured model: llama3.2:1b
+2026-06-11 11:48:06,703 - llm_service - INFO - Available Ollama models: qwen2.5:1.5b, llama3.2:1b
+2026-06-11 11:48:06,703 - llm_service - INFO - Model validation successful: llama3.2:1b is available.
+2026-06-11 11:48:16,616 - llm_service - INFO - Performing startup Ollama connection check...
+2026-06-11 11:48:17,226 - llm_service - INFO - Health check result: Ollama server is reachable and connected.
+2026-06-11 11:48:17,769 - llm_service - INFO - Configured model: llama3.2:1b
+2026-06-11 11:48:17,770 - llm_service - INFO - Available Ollama models: qwen2.5:1.5b, llama3.2:1b
+2026-06-11 11:48:17,771 - llm_service - INFO - Model validation successful: llama3.2:1b is available.
+2026-06-11 11:48:19,645 - llm_service - INFO - Performing startup Ollama connection check...
+2026-06-11 11:48:20,216 - llm_service - INFO - Health check result: Ollama server is reachable and connected.
+2026-06-11 11:48:20,745 - llm_service - INFO - Configured model: llama3.2:1b
+2026-06-11 11:48:20,745 - llm_service - INFO - Available Ollama models: qwen2.5:1.5b, llama3.2:1b
+2026-06-11 11:48:20,746 - llm_service - INFO - Model validation successful: llama3.2:1b is available.
+2026-06-11 12:00:06,044 - llm_service - INFO - Performing startup Ollama connection check...
+2026-06-11 12:00:06,636 - llm_service - INFO - Health check result: Ollama server is reachable and connected.
+2026-06-11 12:00:07,164 - llm_service - INFO - Configured model: llama3.2:1b
+2026-06-11 12:00:07,164 - llm_service - INFO - Available Ollama models: qwen2.5:1.5b, llama3.2:1b
+2026-06-11 12:00:07,165 - llm_service - INFO - Model validation successful: llama3.2:1b is available.
+2026-06-11 19:57:59,159 - llm_service - INFO - Performing startup Ollama connection check...
+2026-06-11 19:57:59,955 - llm_service - INFO - Health check result: Ollama server is reachable and connected.
+2026-06-11 19:58:00,548 - llm_service - INFO - Configured model: llama3.2:1b
+2026-06-11 19:58:00,549 - llm_service - INFO - Available Ollama models: qwen2.5:1.5b, llama3.2:1b
+2026-06-11 19:58:00,549 - llm_service - INFO - Model validation successful: llama3.2:1b is available.
+2026-06-12 18:20:56,238 - llm_service - INFO - Performing startup Ollama connection check...
+2026-06-12 18:20:56,876 - llm_service - INFO - Health check result: Ollama server is reachable and connected.
+2026-06-12 18:20:57,408 - llm_service - INFO - Configured model: llama3.2:1b
+2026-06-12 18:20:57,408 - llm_service - INFO - Available Ollama models: qwen2.5:1.5b, llama3.2:1b
+2026-06-12 18:20:57,408 - llm_service - INFO - Model validation successful: llama3.2:1b is available.

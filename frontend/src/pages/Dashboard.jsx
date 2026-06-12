@@ -1,151 +1,221 @@
-import React, { useContext, useState } from 'react';
-import { AuthContext } from '../context/AuthContext';
-import { UploadCloud, FileText, CheckCircle, AlertCircle } from 'lucide-react';
-import api from '../services/api';
+import React, { useEffect, useState, useRef } from 'react';
+import { Download, Share2, Target, CheckCircle2, AlertCircle, TrendingUp } from 'lucide-react';
+import html2pdf from 'html2pdf.js';
+import { dashboardService } from '../services/api';
+import { KPICard } from '../components/cards/KPICard';
+import { InsightCard } from '../components/cards/InsightCard';
+import { ATSGaugeChart } from '../components/charts/ATSGaugeChart';
+import { SkillMatchPieChart } from '../components/charts/SkillMatchPieChart';
+import { ResumeSectionChart } from '../components/charts/ResumeSectionChart';
+import { Loader } from '../components/ui/Loader';
+import { ErrorState } from '../components/ui/ErrorState';
+import { Sidebar } from '../components/dashboard/Sidebar';
 
-export default function Dashboard() {
-  const { user } = useContext(AuthContext);
-  const [file, setFile] = useState(null);
-  const [jobDesc, setJobDesc] = useState('');
-  const [analyzing, setAnalyzing] = useState(false);
-  const [results, setResults] = useState(null);
-  const [isDragOver, setIsDragOver] = useState(false);
+export const Dashboard = () => {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const dashboardRef = useRef(null);
 
-  const handleAnalyze = async () => {
-    if (!file || !jobDesc) return alert("Please provide both a resume (PDF) and a job description.");
-    setAnalyzing(true);
-    setResults(null);
+  useEffect(() => {
+    // Check initial dark mode preference
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      setIsDarkMode(true);
+      document.documentElement.classList.add('dark');
+    }
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    setLoading(true);
+    setError(null);
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-      
-      const resumeRes = await api.post('/resumes/upload-resume', formData);
-      const jobRes = await api.post('/jobs/', { title: "Target Job", description: jobDesc });
-      
-      const analysisRes = await api.post('/analysis/', {
-        resume_id: resumeRes.data.file_id,
-        job_id: jobRes.data.id
-      });
-      
-      setResults(analysisRes.data);
-    } catch (e) {
-      console.error(e);
-      alert("Error analyzing resume. Please ensure the backend is running and Ollama model is available.");
+      const analytics = await dashboardService.getAnalytics();
+      setData(analytics);
+    } catch (err) {
+      setError(err.message);
     } finally {
-      setAnalyzing(false);
+      setLoading(false);
     }
   };
 
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    setIsDragOver(true);
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+    document.documentElement.classList.toggle('dark');
   };
 
-  const handleDragLeave = (e) => {
-    e.preventDefault();
-    setIsDragOver(false);
+  const exportPDF = () => {
+    const element = dashboardRef.current;
+    const opt = {
+      margin: 0.5,
+      filename: 'ATS_Analytics_Report.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true },
+      jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+    };
+    html2pdf().set(opt).from(element).save();
   };
 
-  const handleDrop = (e) => {
-    e.preventDefault();
-    setIsDragOver(false);
-    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      const droppedFile = e.dataTransfer.files[0];
-      if (droppedFile.type === 'application/pdf' || droppedFile.name.endsWith('.pdf')) {
-        setFile(droppedFile);
-      } else {
-        alert('Please upload a PDF file.');
-      }
-    }
-  };
+  if (loading) {
+    return <div className="flex h-screen bg-gray-50 dark:bg-gray-950 items-center justify-center"><Loader /></div>;
+  }
+
+  if (error) {
+    return <div className="flex h-screen bg-gray-50 dark:bg-gray-950 items-center justify-center p-4"><ErrorState message={error} onRetry={fetchData} /></div>;
+  }
+
+  if (!data) return null;
 
   return (
-    <div className="py-8 max-w-5xl mx-auto">
-      <div className="mb-10 text-center">
-        <h2 className="text-4xl font-extrabold text-gray-900 mb-4">ATS Analysis Dashboard</h2>
-        <p className="text-lg text-gray-500">Discover how well your resume matches the job description.</p>
-      </div>
+    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 font-sans transition-colors duration-200">
+      <Sidebar isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-          <h3 className="text-xl font-bold mb-6 flex items-center text-gray-800"><UploadCloud className="mr-3 text-blue-500" /> Upload Resume PDF</h3>
-          <div 
-            className={`border-2 border-dashed rounded-xl p-8 text-center transition-colors ${isDragOver ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:bg-gray-50'}`}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-          >
-            <input 
-              type="file" 
-              accept=".pdf"
-              onChange={e => setFile(e.target.files[0])}
-              className="hidden"
-              id="file-upload"
-            />
-            <label htmlFor="file-upload" className="cursor-pointer flex flex-col items-center w-full h-full">
-              <UploadCloud className={`h-12 w-12 mb-3 ${isDragOver ? 'text-blue-500' : 'text-gray-400'}`} />
-              <span className="text-sm font-medium text-gray-600 mb-1">{file ? file.name : "Click to select or drag and drop"}</span>
-              <span className="text-xs text-gray-400">PDF up to 5MB</span>
-            </label>
-          </div>
-        </div>
-
-        <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-          <h3 className="text-xl font-bold mb-6 flex items-center text-gray-800"><FileText className="mr-3 text-indigo-500" /> Job Description</h3>
-          <textarea 
-            className="w-full p-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-gray-700 bg-gray-50"
-            rows="6"
-            placeholder="Paste the target job description here..."
-            value={jobDesc}
-            onChange={e => setJobDesc(e.target.value)}
-          ></textarea>
-        </div>
-      </div>
-
-      <div className="mt-10 flex justify-center">
-        <button 
-          onClick={handleAnalyze}
-          disabled={analyzing}
-          className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 disabled:opacity-70 text-white font-bold py-4 px-12 rounded-xl shadow-lg transition-all transform hover:-translate-y-1 flex items-center"
-        >
-          {analyzing ? (
-            <><svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Analyzing with AI...</>
-          ) : 'Run ATS Analysis'}
-        </button>
-      </div>
-
-      {results && (
-        <div className="mt-16 bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
-          <div className="bg-gradient-to-r from-emerald-50 to-teal-50 p-8 border-b border-gray-100 flex items-center justify-between">
-            <div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-1">Analysis Complete</h3>
-              <p className="text-gray-600 text-sm">Review your personalized AI feedback below.</p>
-            </div>
-            <div className="text-right">
-              <div className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-1">Match Score</div>
-              <div className={`text-5xl font-black ${results.match_score >= 80 ? 'text-green-500' : results.match_score >= 50 ? 'text-yellow-500' : 'text-red-500'}`}>
-                {results.match_score}%
-              </div>
-            </div>
-          </div>
+      <main className="flex-1 overflow-y-auto" ref={dashboardRef}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           
-          <div className="p-8 space-y-8">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
             <div>
-              <h4 className="text-lg font-bold text-gray-900 mb-3 flex items-center"><CheckCircle className="mr-2 text-green-500 h-5 w-5" /> ATS Feedback</h4>
-              <div className="bg-gray-50 p-5 rounded-xl text-gray-700 leading-relaxed border border-gray-100">
-                {results.ats_feedback}
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                Candidate Analytics
+              </h1>
+              <p className="text-gray-500 dark:text-gray-400 mt-1">Detailed ATS parsing report and skill match breakdown.</p>
+            </div>
+            <div className="flex items-center gap-3">
+              <button onClick={exportPDF} className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors shadow-sm">
+                <Download className="w-4 h-4" />
+                Export PDF
+              </button>
+            </div>
+          </div>
+
+          {/* KPI Cards Row */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <KPICard 
+              title="ATS Score" 
+              value={data.ats_score} 
+              icon={Target} 
+              colorClass={data.ats_score >= 71 ? 'text-green-500' : data.ats_score >= 41 ? 'text-yellow-500' : 'text-red-500'}
+              delay={0.1}
+            />
+            <KPICard 
+              title="Skill Match" 
+              value={`${data.skill_match_percentage}%`} 
+              icon={TrendingUp}
+              colorClass="text-blue-500"
+              delay={0.2}
+            >
+              <div className="mt-4 w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                <div 
+                  className="bg-blue-500 h-2 rounded-full transition-all duration-1000" 
+                  style={{ width: `${data.skill_match_percentage}%` }}
+                />
               </div>
+            </KPICard>
+            <KPICard 
+              title="Matched Skills" 
+              value={data.matched_skills.length} 
+              icon={CheckCircle2}
+              colorClass="text-emerald-500"
+              delay={0.3}
+            >
+              <div className="mt-4 flex flex-wrap gap-2">
+                {data.matched_skills.slice(0, 3).map(skill => (
+                  <span key={skill} className="px-2 py-1 text-xs font-medium bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 rounded-md">
+                    {skill}
+                  </span>
+                ))}
+                {data.matched_skills.length > 3 && (
+                  <span className="px-2 py-1 text-xs font-medium text-gray-500 dark:text-gray-400">
+                    +{data.matched_skills.length - 3} more
+                  </span>
+                )}
+              </div>
+            </KPICard>
+            <KPICard 
+              title="Missing Skills" 
+              value={data.missing_skills.length} 
+              icon={AlertCircle}
+              colorClass="text-red-500"
+              delay={0.4}
+            >
+              <div className="mt-4 flex flex-wrap gap-2">
+                {data.missing_skills.slice(0, 3).map(skill => (
+                  <span key={skill} className="px-2 py-1 text-xs font-medium bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 rounded-md">
+                    {skill}
+                  </span>
+                ))}
+                {data.missing_skills.length > 3 && (
+                  <span className="px-2 py-1 text-xs font-medium text-gray-500 dark:text-gray-400">
+                    +{data.missing_skills.length - 3} more
+                  </span>
+                )}
+              </div>
+            </KPICard>
+          </div>
+
+          {/* Charts Row */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 lg:col-span-1">
+              <h3 className="text-lg font-semibold mb-6">ATS Performance Meter</h3>
+              <ATSGaugeChart score={data.ats_score} />
             </div>
             
-            <div>
-              <h4 className="text-lg font-bold text-gray-900 mb-3 flex items-center"><AlertCircle className="mr-2 text-amber-500 h-5 w-5" /> Detailed AI Report</h4>
-              <div className="bg-gray-50 p-5 rounded-xl text-gray-700 leading-relaxed border border-gray-100 whitespace-pre-wrap font-mono text-sm">
-                {results.llm_report}
-              </div>
+            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 lg:col-span-1">
+              <h3 className="text-lg font-semibold mb-6">Skill Match Distribution</h3>
+              <SkillMatchPieChart matchPercentage={data.skill_match_percentage} />
+            </div>
+
+            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 lg:col-span-1">
+              <h3 className="text-lg font-semibold mb-6">Resume Section Analysis</h3>
+              <ResumeSectionChart data={data.resume_sections} />
             </div>
           </div>
+
+          {/* Insights Panel */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <InsightCard title="Candidate Summary" delay={0.5}>
+              <p className="leading-relaxed">{data.candidate_summary}</p>
+            </InsightCard>
+
+            <InsightCard title="Missing Skills & Requirements" delay={0.6}>
+              <div className="flex flex-wrap gap-2">
+                {data.missing_skills.map((skill, i) => (
+                  <div key={i} className="px-3 py-1.5 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-full text-sm font-medium border border-red-100 dark:border-red-900/50">
+                    {skill}
+                  </div>
+                ))}
+              </div>
+            </InsightCard>
+
+            <InsightCard title="Key Strengths" delay={0.7}>
+              <ul className="space-y-3">
+                {data.strengths.map((item, i) => (
+                  <li key={i} className="flex gap-3 items-start">
+                    <CheckCircle2 className="w-5 h-5 text-green-500 shrink-0 mt-0.5" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </InsightCard>
+
+            <InsightCard title="Improvement Recommendations" delay={0.8}>
+              <ul className="space-y-3">
+                {data.improvement_recommendations.map((item, i) => (
+                  <li key={i} className="flex gap-3 items-start">
+                    <div className="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0 mt-0.5 text-xs font-bold">
+                      {i + 1}
+                    </div>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </InsightCard>
+          </div>
+
         </div>
-      )}
+      </main>
     </div>
   );
-}
+};

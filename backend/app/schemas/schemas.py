@@ -72,6 +72,18 @@ class AnalysisResponse(AnalysisBase):
     class Config:
         from_attributes = True
 
+# AI Resume Analysis Schemas
+class AIAnalysisRequest(BaseModel):
+    resume_id: int
+    job_id: int
+    ats_score: float
+
+class AIAnalysisResponse(BaseModel):
+    objective_feedback: str
+    missing_skills: List[str] = []
+    improvement_recommendations: List[str] = []
+    interview_preparation_advice: List[str] = []
+
 # Parsed Resume Data Schemas
 class ParsedResumeDataResponse(BaseModel):
     id: int
@@ -112,3 +124,35 @@ class ATSCalculateResponse(BaseModel):
                 "recommendations": ["Consider adding missing keywords like: Docker, AWS"]
             }
         }
+
+# Interview Questions Schemas
+class QuestionCategory(BaseModel):
+    easy: List[str] = []
+    medium: List[str] = []
+    hard: List[str] = []
+
+class InterviewQuestionsRequest(BaseModel):
+    resume_text: str
+    job_description: str
+
+class InterviewQuestionsResponse(BaseModel):
+    technical_questions: QuestionCategory
+    project_questions: QuestionCategory
+    hr_questions: QuestionCategory
+
+# Dashboard Schemas
+class ResumeSectionsSchema(BaseModel):
+    skills: int
+    experience: int
+    education: int
+    projects: int
+
+class DashboardSchema(BaseModel):
+    ats_score: int
+    skill_match_percentage: int
+    matched_skills: List[str]
+    missing_skills: List[str]
+    resume_sections: ResumeSectionsSchema
+    candidate_summary: str
+    strengths: List[str]
+    weaknesses: List[str]

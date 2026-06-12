@@ -1,3 +1,4 @@
+# pyrefly: ignore [missing-import]
 import fitz  # PyMuPDF
 
 def parse_pdf(file_bytes: bytes) -> str:

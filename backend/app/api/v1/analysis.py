@@ -3,8 +3,9 @@ from sqlalchemy.orm import Session
 from app.db.database import get_db
 from app.db.models import User, Resume, JobDescription, Analysis
 from app.api.deps import get_current_user
-from app.schemas.schemas import AnalysisResponse, AnalysisCreate
+from app.schemas.schemas import AnalysisResponse, AnalysisCreate, AIAnalysisRequest, AIAnalysisResponse
 from app.services.ats_scorer import ATSScorerService
+from app.services import llm_service
 import json
 
 router = APIRouter()
@@ -76,3 +77,41 @@ def get_analysis(
     if not analysis:
         raise HTTPException(status_code=404, detail="Analysis not found")
     return analysis
+
+@router.post("/ai-insights", response_model=AIAnalysisResponse)
+async def get_ai_resume_insights(
+    request: AIAnalysisRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    resume = db.query(Resume).filter(Resume.id == request.resume_id, Resume.owner_id == current_user.id).first()
+    job = db.query(JobDescription).filter(JobDescription.id == request.job_id, JobDescription.owner_id == current_user.id).first()
+    
+    if not resume or not job:
+        raise HTTPException(status_code=404, detail="Resume or Job not found")
+        
+    parsed_resume_data = resume.parsed_data
+    if not parsed_resume_data:
+        raise HTTPException(status_code=400, detail="Resume has not been fully parsed yet.")
+
+    parsed_resume_dict = {
+        "skills": parsed_resume_data.skills,
+        "education": parsed_resume_data.education,
+        "experience": parsed_resume_data.experience,
+        "projects": parsed_resume_data.projects
+    }
+    
+    parsed_jd_dict = {
+        "required_skills": job.required_skills,
+        "preferred_skills": job.preferred_skills,
+        "experience_requirement": job.experience_requirement,
+        "education_requirement": job.education_requirement
+    }
+
+    result = await llm_service.generate_ai_resume_analysis(
+        parsed_resume_dict, 
+        parsed_jd_dict, 
+        request.ats_score
+    )
+    
+    return result
