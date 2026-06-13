@@ -2,6 +2,7 @@ import httpx
 import logging
 from typing import Optional
 from app.core.config import settings
+import app.core.http_client as hc
 
 logger = logging.getLogger(__name__)
 
@@ -19,16 +20,22 @@ class OllamaService:
         payload = {
             "model": self.model,
             "prompt": prompt,
-            "stream": False
+            "stream": False,
+            "keep_alive": 0
         }
         
         try:
-            async with httpx.AsyncClient(timeout=self.timeout) as client:
-                response = await client.post(url, json=payload)
-                response.raise_for_status()
+            if hc.http_client is None:
+                async with httpx.AsyncClient(timeout=self.timeout) as client:
+                    response = await client.post(url, json=payload)
+            else:
+                # Use shared client, override timeout if necessary or just use default
+                response = await hc.http_client.post(url, json=payload, timeout=self.timeout)
                 
-                data = response.json()
-                return data.get("response", "")
+            response.raise_for_status()
+            
+            data = response.json()
+            return data.get("response", "")
                 
         except httpx.ReadTimeout:
             error_msg = f"Ollama generation timed out after {self.timeout}s for model {self.model}."

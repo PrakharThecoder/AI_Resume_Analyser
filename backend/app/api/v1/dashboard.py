@@ -1,5 +1,9 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 import logging
+from sqlalchemy.orm import Session
+from app.db.database import get_db
+from app.api.deps import get_current_user
+from app.db.models import User
 from app.schemas.schemas import DashboardSchema
 from app.services.dashboard_service import DashboardService
 
@@ -38,11 +42,14 @@ MOCK_DASHBOARD_DATA = {
 
 @router.get("", response_model=DashboardSchema)
 @router.get("/", response_model=DashboardSchema, include_in_schema=False)
-async def get_dashboard():
+async def get_dashboard(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
     """Retrieve the main dashboard payload."""
     try:
-        logger.info("Accessing GET /api/v1/dashboard")
-        data = await DashboardService.get_dashboard_data()
+        logger.info(f"Accessing GET /api/v1/dashboard for user {current_user.id}")
+        data = await DashboardService.get_dashboard_data(db, current_user.id)
         return data
     except Exception as e:
         logger.error(f"Failed to retrieve dashboard data: {str(e)}", exc_info=True)
@@ -58,12 +65,15 @@ async def get_dashboard_health():
     }
 
 @router.get("/debug")
-async def get_dashboard_debug():
+async def get_dashboard_debug(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
     """Return complete dashboard debug payload."""
     logger.info("Accessing GET /api/v1/dashboard/debug")
     try:
         # Check if service is callable
-        await DashboardService.get_dashboard_data()
+        await DashboardService.get_dashboard_data(db, current_user.id)
         service_status = "ok"
     except Exception:
         service_status = "error"

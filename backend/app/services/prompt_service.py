@@ -2,31 +2,25 @@ import json
 
 class PromptEngineeringService:
     @staticmethod
-    def get_resume_analysis_prompt(parsed_resume: dict, parsed_jd: dict, ats_score: float) -> str:
+    def get_resume_insights_prompt(resume_text: str, deterministic_stats: dict) -> str:
         return f"""
-You are an expert technical recruiter.
-Analyze candidate resumes and compare them with job descriptions.
+You are an expert ATS and recruitment AI. Based on the following deterministic ATS scores and the user's resume, generate professional insights.
+DO NOT invent new scores. Only provide the requested text.
 
-Provide:
-- Objective feedback
-- Missing skills
-- Improvement recommendations
-- Interview preparation advice
+Deterministic Stats:
+{json.dumps(deterministic_stats, indent=2)}
 
-Keep output concise and professional.
+Resume Content:
+{resume_text[:3000]}
 
-Job Description:
-{json.dumps(parsed_jd, indent=2)}
-
-Parsed Resume:
-{json.dumps(parsed_resume, indent=2)}
-The candidate has an ATS match score of {ats_score}%.
-
-Provide your detailed analysis as a JSON object with exactly these keys:
-- "objective_feedback": A brief concise summary of the candidate's fit.
-- "missing_skills": A list of strings of critical skills missing.
-- "improvement_recommendations": A list of strings with actionable advice to improve the resume.
-- "interview_preparation_advice": A list of strings with tips for interview preparation based on their profile and the JD.
+Generate a JSON response EXACTLY matching this schema:
+{{
+    "candidate_summary": "Generate a professional 3-4 sentence summary of the candidate's resume strengths and readiness based on the ATS analysis.",
+    "strengths": ["Strength 1", "Strength 2", "Strength 3"],
+    "weaknesses": ["Weakness 1", "Weakness 2", "Weakness 3"],
+    "recommendations": ["Recommendation 1", "Recommendation 2", "Recommendation 3", "Recommendation 4", "Recommendation 5"],
+    "interview_tips": ["Tip 1", "Tip 2", "Tip 3"]
+}}
 
 Only output valid JSON. Do not include markdown formatting or extra text.
 """

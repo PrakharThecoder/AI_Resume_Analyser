@@ -6,10 +6,7 @@ import { ATSGaugeChart } from '../components/charts/ATSGaugeChart';
 import { SkillMatchPieChart } from '../components/charts/SkillMatchPieChart';
 import { ResumeSectionChart } from '../components/charts/ResumeSectionChart';
 
-const api = axios.create({
-  baseURL: 'http://127.0.0.1:8000/api/v1',
-  headers: { 'Content-Type': 'application/json' },
-});
+import api from '../services/api';
 
 export const DashboardTest = () => {
   const [healthStatus, setHealthStatus] = useState(null);

@@ -2,11 +2,12 @@ import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
 export const ResumeSectionChart = ({ data }) => {
-  // data format expected: { skills: 90, experience: 75, education: 85, projects: 70 }
-  const chartData = Object.entries(data).map(([key, value]) => ({
-    name: key.charAt(0).toUpperCase() + key.slice(1),
-    score: value
-  }));
+  const chartData = Array.isArray(data)
+    ? data
+    : Object.entries(data || {}).map(([key, value]) => ({
+        name: key.charAt(0).toUpperCase() + key.slice(1),
+        score: value
+      }));
 
   const getBarColor = (score) => {
     if (score >= 80) return '#10B981'; // green-500

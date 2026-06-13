@@ -52,3 +52,16 @@ async def debug_test_llm():
             "status": "error",
             "detail": str(e)
         }
+
+@router.get("/status")
+async def get_status():
+    from app.core.metrics import metrics
+    
+    model_status = await check_model_availability()
+    
+    return {
+        "model_name": settings.OLLAMA_MODEL,
+        "loaded": model_status.get("status") == "available",
+        "lazy_loaded": True,
+        "load_time_ms": metrics.last_model_load_time_ms
+    }

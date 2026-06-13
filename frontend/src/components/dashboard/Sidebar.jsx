@@ -7,7 +7,6 @@ export const Sidebar = ({ isDarkMode, toggleDarkMode }) => {
   const navItems = [
     { name: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },
     { name: 'Resumes', icon: FileText, path: '/resumes' },
-    { name: 'Settings', icon: Settings, path: '/settings' },
   ];
 
   return (

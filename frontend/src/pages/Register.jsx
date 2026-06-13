@@ -17,7 +17,8 @@ export default function Register() {
       await register(email, password);
       navigate('/dashboard');
     } catch (err) {
-      alert("Failed to register. Email might already exist.");
+      console.error(err.response?.data);
+      alert(err.response?.data?.detail || "Failed to register. Email might already exist.");
     } finally {
       setLoading(false);
     }

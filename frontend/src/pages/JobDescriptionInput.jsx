@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import api from '../services/api';
 
 export default function JobDescriptionInput() {
   const [jdText, setJdText] = useState('');
@@ -21,21 +22,11 @@ export default function JobDescriptionInput() {
     setResult(null);
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/v1/job-description/analyze', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ job_description: jdText }),
+      const response = await api.post('/job-description/analyze', {
+        job_description: jdText
       });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.detail || 'Failed to analyze job description');
-      }
-
-      setResult(data);
+      setResult(response.data);
     } catch (err) {
       setError(err.message);
     } finally {

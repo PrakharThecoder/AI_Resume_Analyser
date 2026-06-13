@@ -34,6 +34,8 @@ class ResumeResponse(ResumeBase):
     id: int
     upload_date: datetime
     owner_id: int
+    analysis_status: str
+    ats_score: Optional[float] = None
 
     class Config:
         from_attributes = True
@@ -141,18 +143,19 @@ class InterviewQuestionsResponse(BaseModel):
     hr_questions: QuestionCategory
 
 # Dashboard Schemas
-class ResumeSectionsSchema(BaseModel):
-    skills: int
-    experience: int
-    education: int
-    projects: int
+class ResumeSectionItem(BaseModel):
+    name: str
+    score: int
 
 class DashboardSchema(BaseModel):
-    ats_score: int
+    base_ats_score: int
+    ats_score: Optional[int] = None
     skill_match_percentage: int
-    matched_skills: List[str]
-    missing_skills: List[str]
-    resume_sections: ResumeSectionsSchema
+    matched_skills: List[str] = []
+    missing_skills: List[str] = []
+    strengths: List[str] = []
+    weaknesses: List[str] = []
+    recommendations: List[str] = []
     candidate_summary: str
-    strengths: List[str]
-    weaknesses: List[str]
+    interview_tips: List[str] = []
+    section_scores: dict

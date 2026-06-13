@@ -17,7 +17,8 @@ export default function Login() {
       await login(email, password);
       navigate('/dashboard');
     } catch (err) {
-      alert("Failed to login. Please check your credentials.");
+      console.error(err.response?.data);
+      // Toast is already handled in AuthContext
     } finally {
       setLoading(false);
     }

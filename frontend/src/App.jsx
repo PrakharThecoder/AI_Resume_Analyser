@@ -5,7 +5,10 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import { Dashboard } from './pages/Dashboard';
 import { DashboardTest } from './pages/DashboardTest';
+import { Resumes } from './pages/Resumes';
 import JobDescriptionInput from './pages/JobDescriptionInput';
+import { ProtectedRoute } from './components/ProtectedRoute';
+import { Toaster } from 'react-hot-toast';
 
 const AppLayout = ({ children }) => {
   const location = useLocation();
@@ -17,6 +20,7 @@ const AppLayout = ({ children }) => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 transition-colors">
+      <Toaster position="top-right" />
       <nav className="bg-white dark:bg-gray-800 shadow-sm border-b dark:border-gray-700 p-4 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <Link to="/" className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
@@ -45,8 +49,21 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/dashboard/test" element={<DashboardTest />} />
-            <Route path="/dashboard/*" element={<Dashboard />} />
+            <Route path="/dashboard/test" element={
+              <ProtectedRoute>
+                <DashboardTest />
+              </ProtectedRoute>
+            } />
+            <Route path="/dashboard/*" element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/resumes" element={
+              <ProtectedRoute>
+                <Resumes />
+              </ProtectedRoute>
+            } />
             <Route path="/jd-input" element={<JobDescriptionInput />} />
           </Routes>
         </AppLayout>

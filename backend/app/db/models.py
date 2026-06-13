@@ -22,6 +22,8 @@ class Resume(Base):
     file_size = Column(Integer)
     content = Column(Text) # Extracted text
     upload_date = Column(DateTime, default=datetime.datetime.utcnow)
+    analysis_status = Column(String, default="Pending")
+    ats_score = Column(Float, nullable=True)
     owner_id = Column(Integer, ForeignKey("users.id"))
     
     owner = relationship("User", back_populates="resumes")
@@ -84,3 +86,25 @@ class ATSResult(Base):
 
     resume = relationship("Resume")
     job = relationship("JobDescription")
+
+class ResumeAnalysis(Base):
+    __tablename__ = "resume_analyses"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
+    
+    base_ats_score = Column(Integer, nullable=True)
+    ats_score = Column(Integer, nullable=True)
+    role = Column(String, nullable=True)
+    skill_match_percentage = Column(Integer)
+    
+    matched_skills = Column(JSON)
+    missing_skills = Column(JSON)
+    resume_sections = Column(JSON)
+    candidate_summary = Column(Text)
+    strengths = Column(JSON)
+    weaknesses = Column(JSON)
+    recommendations = Column(JSON)
+    interview_tips = Column(JSON)
+    
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)

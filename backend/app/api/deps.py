@@ -29,11 +29,20 @@ def get_current_user(db: Session = Depends(get_db), token: str = Depends(oauth2_
         if email is None:
             raise credentials_exception
         token_data = TokenData(email=email)
-    except JWTError:
+    except JWTError as e:
+        print("JWT ERROR:", str(e))
         raise credentials_exception
+        
     user = db.query(User).filter(User.email == token_data.email).first()
     if user is None:
         raise credentials_exception
+        
+    print("TOKEN:", token)
+    print("SECRET:", SECRET_KEY)
+    print("PAYLOAD:", payload)
+    print("EMAIL:", email)
+    print("USER:", user)
+    
     return user
 
 oauth2_scheme_optional = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login", auto_error=False)
