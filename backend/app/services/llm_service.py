@@ -9,20 +9,29 @@ from app.core.metrics import metrics
 
 async def check_ollama_connection() -> dict:
     """Check if the Ollama server is running and reachable."""
-    try:
-        if hc.http_client is None:
-            # Fallback if accessed before lifespan
-            async with httpx.AsyncClient(timeout=5.0) as client:
-                response = await client.get(f"{settings.OLLAMA_BASE_URL}")
-        else:
-            response = await hc.http_client.get(f"{settings.OLLAMA_BASE_URL}", timeout=5.0)
-            
-        response.raise_for_status()
-        llm_logger.info("Health check result: Ollama server is reachable and connected.")
-        return {"status": "connected", "message": "Ollama server is reachable"}
-    except Exception as e:
-        llm_logger.error(f"Health check failed: Ollama connection failed: {e}")
-        return {"status": "disconnected", "message": str(e)}
+    import asyncio
+    max_retries = 5
+    base_delay = 2.0
+    for attempt in range(max_retries):
+        try:
+            if hc.http_client is None:
+                # Fallback if accessed before lifespan
+                async with httpx.AsyncClient(timeout=5.0) as client:
+                    response = await client.get(f"{settings.OLLAMA_BASE_URL}")
+            else:
+                response = await hc.http_client.get(f"{settings.OLLAMA_BASE_URL}", timeout=5.0)
+                
+            response.raise_for_status()
+            llm_logger.info("Health check result: Ollama server is reachable and connected.")
+            return {"status": "connected", "message": "Ollama server is reachable"}
+        except Exception as e:
+            if attempt < max_retries - 1:
+                llm_logger.warning(f"Ollama connection attempt {attempt + 1} failed, retrying in {base_delay}s... Error: {e}")
+                await asyncio.sleep(base_delay)
+                base_delay *= 1.5
+            else:
+                llm_logger.error(f"Health check failed: Ollama connection failed after {max_retries} attempts: {e}")
+                return {"status": "disconnected", "message": str(e)}
 
 async def check_model_availability() -> dict:
     """Check if the required model is pulled and available."""

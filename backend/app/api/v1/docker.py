@@ -26,8 +26,9 @@ async def get_docker_status(db: Session = Depends(get_db)):
         pass
 
     # 2. Check Ollama Connection & Model
-    ollama_host = os.getenv("OLLAMA_HOST", "http://localhost:11434")
-    model_name = os.getenv("OLLAMA_MODEL", "llama3.2:1b")
+    from app.core.config import settings
+    ollama_host = settings.OLLAMA_BASE_URL
+    model_name = settings.OLLAMA_MODEL
     
     try:
         async with httpx.AsyncClient(timeout=2.0) as client:
