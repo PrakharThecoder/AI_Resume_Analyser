@@ -1,3 +1,4 @@
+# pyrefly: ignore [missing-import]
 from fastapi import APIRouter, HTTPException
 from typing import Any, Dict
 from app.services.llm_service import generate_interview_questions, check_ollama_connection

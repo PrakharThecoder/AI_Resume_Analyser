@@ -1,4 +1,5 @@
 import io
+# pyrefly: ignore [missing-import]
 from fastapi.testclient import TestClient
 from app.main import app
 
@@ -8,9 +9,9 @@ pdf_content = b"%PDF-1.4\n1 0 obj\n<<\n/Type /Catalog\n>>\nendobj\ntrailer\n<<\n
 
 # Upload #1
 print("--- Uploading Resume #1 ---")
-resp1 = client.post("/api/v1/resumes/upload-resume", files={"file": ("dummy.pdf", pdf_content, "application/pdf")})
+resp1 = client.post("/api/v1/resumes/upload", files={"file": ("dummy.pdf", pdf_content, "application/pdf")})
 print(resp1.json())
-resume_id_1 = resp1.json()['resume_id']
+resume_id_1 = resp1.json()['id']
 
 # Parse #1 (Expected: MISS)
 print("--- Parsing Resume #1 ---")
@@ -19,8 +20,8 @@ print("Parse Response 1 Status:", parse_resp1.status_code)
 
 # Upload #2 (Identical Content)
 print("\n--- Uploading Resume #2 (Identical Content) ---")
-resp2 = client.post("/api/v1/resumes/upload-resume", files={"file": ("dummy.pdf", pdf_content, "application/pdf")})
-resume_id_2 = resp2.json()['resume_id']
+resp2 = client.post("/api/v1/resumes/upload", files={"file": ("dummy.pdf", pdf_content, "application/pdf")})
+resume_id_2 = resp2.json()['id']
 
 # Parse #2 (Expected: HIT)
 print("--- Parsing Resume #2 ---")

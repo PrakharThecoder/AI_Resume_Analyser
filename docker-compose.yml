@@ -17,7 +17,7 @@ services:
     # We will use an init script to pull the model so it persists automatically.
     entrypoint: [ "/bin/sh", "-c", "ollama serve & sleep 5 && ollama pull llama3.2:1b && wait" ]
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      test: ["CMD", "ollama", "list"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -32,7 +32,7 @@ services:
     env_file:
       - .env
     environment:
-      - DATABASE_URL=sqlite:////app/data/app.db
+      - DATABASE_URL=sqlite:////app/resume_analyzer.db
       - OLLAMA_HOST=http://ollama:11434
       - OLLAMA_MODEL=llama3.2:1b
     ports:
@@ -40,15 +40,15 @@ services:
     volumes:
       - backend_uploads:/app/uploads
       - backend_reports:/app/reports
-      - sqlite_data:/app/data
-      - ./backend/cache_data.json:/app/cache_data.json  # Note: if JSON is persisted locally. Better to put it in /data instead.
+      - ./backend/resume_analyzer.db:/app/resume_analyzer.db
+      - ./backend/cache_data.json:/app/cache_data.json # Note: if JSON is persisted locally. Better to put it in /data instead.
     networks:
       - resume-analyzer-network
     depends_on:
       ollama:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/jobs/health"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/')"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -59,7 +59,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        - VITE_API_URL=http://localhost:8000
+        - VITE_API_URL=/api/v1
     container_name: frontend
     restart: unless-stopped
     ports:
@@ -70,7 +70,7 @@ services:
       backend:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:80/"]
+      test: [ "CMD", "wget", "-qO-", "http://localhost:80/" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -80,7 +80,6 @@ volumes:
   ollama_models:
   backend_uploads:
   backend_reports:
-  sqlite_data:
 
 networks:
   resume-analyzer-network:

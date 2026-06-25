@@ -1,10 +1,13 @@
 from typing import Generator
+# pyrefly: ignore [missing-import]
 from fastapi import Depends, HTTPException, status
+# pyrefly: ignore [missing-import]
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
 from sqlalchemy.orm import Session
 from app.db.database import SessionLocal
-from app.core.security import ALGORITHM, SECRET_KEY
+from app.core.config import settings
+from app.core.security import SECRET_KEY, ALGORITHM
 from app.db.models import User
 from app.schemas.schemas import TokenData
 

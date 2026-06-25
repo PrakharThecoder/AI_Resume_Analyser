@@ -8,10 +8,11 @@ router = APIRouter()
 
 # Simple schema for test response validation
 class TestValidationSchema(BaseModel):
-    objective_feedback: str = Field(..., min_length=1)
-    missing_skills: list[str]
-    improvement_recommendations: list[str]
-    interview_preparation_advice: list[str]
+    candidate_summary: str = Field(..., min_length=1)
+    strengths: list[str]
+    weaknesses: list[str]
+    recommendations: list[str]
+    interview_tips: list[str]
 
 @router.get("/health")
 async def get_health():
@@ -25,30 +26,22 @@ async def get_health():
 @router.post("/test")
 async def test_ai_analysis():
     """Test the AI Analysis module with hardcoded sample data."""
-    # Hardcoded sample data
-    resume_data = {
-        "skills": ["Python", "FastAPI", "SQL"],
-        "experience": "1 year",
-        "education": "B.Tech"
-    }
+    resume_text = "Experienced Software Engineer with 1 year of experience in Python, FastAPI, and SQL. Education: B.Tech."
     
-    jd_data = {
-        "required_skills": ["Python", "FastAPI", "Docker", "AWS"],
-        "experience_requirement": "2 years"
-    }
-    
-    ats_score = {
+    deterministic_stats = {
+        "base_ats_score": 65,
         "ats_score": 65,
+        "skill_match_percentage": 50.0,
         "matched_skills": ["Python", "FastAPI"],
-        "missing_skills": ["Docker", "AWS"]
+        "missing_skills": ["Docker", "AWS"],
+        "section_scores": {"skills": 10, "experience": 10, "education": 10}
     }
 
     # Execute LLM analysis
     try:
         result = await generate_ai_resume_analysis(
-            parsed_resume=resume_data,
-            parsed_jd=jd_data,
-            ats_score=ats_score["ats_score"]
+            resume_text=resume_text,
+            deterministic_stats=deterministic_stats
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

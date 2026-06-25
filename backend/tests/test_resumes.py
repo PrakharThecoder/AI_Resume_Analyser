@@ -59,17 +59,16 @@ def test_upload_and_parse_resume(setup_teardown):
     file_obj.name = "test_resume.pdf"
     
     response = client.post(
-        "/api/v1/resumes/upload-resume",
+        "/api/v1/resumes/upload",
         files={"file": ("test_resume.pdf", file_obj, "application/pdf")}
     )
     
     assert response.status_code == 200
     data = response.json()
-    assert "resume_id" in data
+    assert "id" in data
     assert data["filename"] == "test_resume.pdf"
-    assert data["upload_status"] == "success"
     
-    resume_id = data["resume_id"]
+    resume_id = data["id"]
     
     # 2. Test parsing the uploaded resume
     parse_response = client.post(f"/api/v1/resumes/parse-resume/{resume_id}")
